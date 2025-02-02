@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Responsive Hospital Website Design Tutorial</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        /* Chatbot Icon and Container Styles - ADDED HERE */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .chatbot-icon {
+            background-color: var(--blue);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .chatbot-icon i {
+            font-size: 24px;
+        }
+
+        .chatbot-iframe {
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+        }
+
+        .chatbot-iframe.show-chatbot {
+            display: block;
+        }
+
+        /* Popup Window Styles */
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 0, 0.9); /* Red background */
+            color: white;
+            padding: 80px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup-content h2 {
+            margin-bottom: 15px;
+        }
+
+        .popup-content button {
+            background-color: white;
+            color: red;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .popup-content button:hover {
+            background-color: lightgray;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- header navbar section start  -->
+
+    <header>
+
+        <!-- logo name  -->
+        <a href="index.html" class="logo"><span>T</span>rishira</a>
+        <!-- navbar link  -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">home</a></li>
+                <li><a href="#about">Diet</a></li>
+                <li><a href="#doctor">doctor</a></li>
+                <li><a href="Report.html">Report</a></li>
+                <li><a href="#review">review</a></li>
+                <li><a href="#contact">contact</a></li>
+                <li><a href="#blog">blog</a></li>
+            </ul>
+        </nav>
+
+    </header>
+    <!-- header navbar section start  -->
+
+    <!-- home section start  -->
+
+    <section id="home" class="home">
+
+        <div class="row">
+
+            <!-- home images  -->
+            <div class="images">
+                <img src="./images/about-3.png" alt="">
+            </div>
+
+            <!-- home heading  -->
+            <div class="content">
+                <!-- <h1>Live IoT Sensor Data</h1>
+
+                    <p><b>Ambient Temperature:</b> <span id="ambientTemp">Loading...</span> °C</p>
+                    <p><b>Object Temperature:</b> <span id="objectTemp">Loading...</span> °C</p>
+                    <p><b>Impact:</b> <span id="impact">Loading...</span></p>
+                    <p><b>Impact Alert:</b> <span id="impactAlert">Loading...</span></p>
+                    <p><b>Emergency Alert:</b> <span id="emergencyAlert">Loading...</span></p> -->
+                <style>
+                    table {
+                        font-family: arial, sans-serif;
+                        border-collapse: collapse;
+                        font-size: medium;
+                    }
+
+                    tr {
+                        height: 40px;
+                    }
+
+                    td,
+                    th {
+                        border: 1px solid #dddddd;
+                        text-align: left;
+                        padding: 50px;
+                        height: 40px;
+                        width: 100%;
+                    }
+
+                    .button-container {
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+                        margin-bottom: 50px;
+                    }
+
+                    .download-btn {
+                        margin-top: 20px;
+                        padding: 15px 30px;
+                        font-size: 1.5rem;
+                        font-weight: bold;
+                        background-color: green;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: 0.3s;
+
+                    }
+
+                    .download-btn:hover {
+                        border: .1rem solid var(--blue);
+                        background: var(--wight);
+                        color: var(--blue);
+                        letter-spacing: .2rem;
+
+                    }
+
+                    tr:nth-child(even) {
+                        background-color: #dddddd;
+                    }
+                </style>
+
+
+                <h1>Patient Report</h1>
+                <br>
+
+                <table>
+                    <tr>
+                        <th>Data</th>
+                        <th>value</th>
+                        <th>Unit</th>
+                    </tr>
+                    <tr>
+                        <td>Thyroid</td>
+                        <td id="thyroidResult">Loading...</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Glucose</td>
+                        <td id="glucoseValue">Loading...</td>
+                        <!-- ✅ Glucose Display -->
+                        <td>mg/dL</td>
+                    </tr>
+                    <tr>
+                        <td>Cholesterol</td>
+                        <td id="cholesterolValue">Loading...</td>
+                        <!-- ✅ Cholesterol Display -->
+                        <td>mg/dL</td>
+                    </tr>
+                    <tr>
+                        <td>SpO2</td>
+                        <td id="SpO2">Loading...</td>
+                        <!-- ✅ SpO2 Display -->
+                        <td>mg/dL</td>
+                    </tr>
+                    <tr>
+                        <td>Heart Rate</td>
+                        <td id="HeartRate">Loading...</td>
+                        <!-- ✅ Heartrate Display -->
+                        <td>mg/dL</td>
+                    </tr>
+                </table>
+
+
+            </div>
+        </div>
+    </section>
+    <!-- home section end  -->
+    <!-- about section start  -->
+
+    <section id="about" class="about">
+
+        <h1 class="heading">Dietary Plan</h1>
+        <h3 class="title">Leading a healthy Life</h3>
+
+        <div class="box-container">
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- about images  -->
+                <div class="images">
+                    <img src="./images/Gluco-diet.webp" alt="">
+                </div>
+
+                <!-- about heading & text  -->
+                <div class="content">
+                    <h3>Glucose Plan</h3>
+                    <p id="glucose-plan">Loading...</p>
+                    <!-- ✅ ID added -->
+                </div>
+            </div>
+            <!-- end here  -->
+
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- about images  -->
+                <div class="images">
+                    <img src="./images/Ch-diet.jpg" alt="">
+                </div>
+
+                <!-- about heading & text  -->
+                <div class="content">
+                    <h3>Cholesterol Plan</h3>
+                    <p id="cholesterol-plan">Loading...</p>
+                    <!-- ✅ ID added -->
+                </div>
+            </div>
+            <!-- end here  -->
+        </div>
+        <div class="button-container">
+            <button id="downloadPdfBtn" class="download-btn">Download PDF</button>
+        </div>
+
+
+    </section>
+
+    <!-- about section end  -->
+    <script type="module">
+        // ✅ Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+
+        // ✅ Your Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiakq7zJ31-m1Q2MkeSgfnmQLNXRFM_OM",
+            authDomain: "thyroid-detection-6d511.firebaseapp.com",
+            databaseURL: "https://thyroid-detection-6d511-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "thyroid-detection-6d511",
+            storageBucket: "thyroid-detection-6d511.firebasestorage.app",
+            messagingSenderId: "334326755504",
+            appId: "1:334326755504:web:59091301428c394df10b75",
+            measurementId: "G-W8Z9Z0WCK5"
+        };
+
+        // ✅ Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // ✅ Function to Update UI
+        function updateUI(snapshot, elementId) {
+            const element = document.getElementById(elementId);
+            if (snapshot.exists() && element) {
+                element.innerText = snapshot.val();
+            } else {
+                element.innerText = "No Data";
+            }
+            // After updating report UI, update dietary plans
+            updateDietPlanText(); // Call diet plan update here!
+        }
+
+        // ✅ Listen for Real-Time Updates from Firebase
+        onValue(ref(database, "/sensor/glucose"), (snapshot) => updateUI(snapshot, "glucoseValue")); // ✅ Glucose Listener
+        onValue(ref(database, "/sensor/cholesterol"), (snapshot) => updateUI(snapshot, "cholesterolValue")); // ✅ Cholesterol Listener
+        onValue(ref(database, "/sensor/heart_rate"), (snapshot) => updateUI(snapshot, "HeartRate"));
+        onValue(ref(database, "/sensor/spo2"), (snapshot) => updateUI(snapshot, "SpO2"));
+
+        onValue(ref(database, "/thyroid_result"), (snapshot) => updateUI(snapshot, "thyroidResult")); // ✅ Thyroid Listener (if needed)
+
+        async function fetchThyroidResult() {
+            try {
+                const response = await fetch("http://172.16.10.211:8000/thyroid_result", { // ⚠️ Correct IP Address Here
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json" // Not strictly needed for GET, but okay
+                    }
+                });
+
+                if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`);
+
+                const data = await response.json();
+                document.getElementById("thyroidResult").innerText = data.condition; // ✅ Correct element ID?
+            } catch (error) {
+                console.error("Error Fetching Data:", error);
+                document.getElementById("thyroidResult").innerText = "Error Loading Data"; // ✅ Error Display
+            }
+        }
+
+        setInterval(fetchThyroidResult, 5000);
+
+
+    </script>
+
+    <!-- JavaScript Logic -->
+    <script>
+        function updateDietPlanText() { // Renamed function to updateDietPlanText
+            // Fetch glucose and cholesterol values from the table
+            let glucoseValue = parseFloat(document.getElementById("glucoseValue").textContent);
+            let cholesterolValue = parseFloat(document.getElementById("cholesterolValue").textContent);
+
+            // Check if values are valid numbers before proceeding
+            if (isNaN(glucoseValue) || isNaN(cholesterolValue)) {
+                console.error("Glucose or Cholesterol values are not valid numbers.");
+                return;
+            }
+
+            // Update dietary plan for glucose
+            let glucosePlanText = "";
+            if (glucoseValue >= 100 && glucoseValue < 200) {
+                glucosePlanText = "Focus on balanced meals with whole grains, lean proteins, and plenty of non-starchy vegetables. Limit sugary drinks and processed foods.";
+            } else if (glucoseValue >= 200 && glucoseValue < 300) {
+                glucosePlanText = "Implement a stricter low-carb approach, emphasizing non-starchy vegetables, healthy fats, and lean proteins. Monitor blood sugar levels closely.";
+            } else {
+                glucosePlanText = "Consult a doctor for a personalized Glucose dietary plan.";
+            }
+            document.getElementById("glucose-plan").textContent = glucosePlanText;
+
+            // Update dietary plan for cholesterol
+            let cholesterolPlanText = "";
+            if (cholesterolValue >= 100 && cholesterolValue < 200) {
+                cholesterolPlanText = "Incorporate heart-healthy fats from fish, nuts, and olive oil. Increase fruit and whole grain intake. Limit saturated fats.";
+            } else if (cholesterolValue >= 200 && cholesterolValue < 350) {
+                cholesterolPlanText = "Adopt a lower saturated fat diet. Choose lean protein sources, increase soluble fiber, and consider plant sterols/stanols. Avoid trans fats and limit cholesterol-rich foods.";
+            } else {
+                cholesterolPlanText = "Consult a specialist for a personalized Cholesterol dietary plan.";
+            }
+            document.getElementById("cholesterol-plan").textContent = cholesterolPlanText;
+        }
+
+
+
+        // No need for window.onload anymore, updateDietPlan is called after Firebase updates
+        // window.onload = updateDietPlan; // REMOVE THIS LINE
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const button = document.getElementById("downloadPdfBtn");
+            if (button) {
+                button.addEventListener("click", generatePDF);
+            } else {
+                console.error("Download PDF button not found!");
+            }
+        });
+
+        function generatePDF() {
+            const thyroidCondition = document.getElementById("thyroidResult").innerText;
+            const glucoseValue = document.getElementById("glucoseValue").innerText;
+            const cholesterolValue = document.getElementById("cholesterolValue").innerText;
+            const glucoseDietPlan = document.getElementById("glucose-plan").innerText;
+            const cholesterolDietPlan = document.getElementById("cholesterol-plan").innerText;
+            const SpO2 = document.getElementById("SpO2").innerText;
+            const HeartRate = document.getElementById("HeartRate").innerText;
+
+            const doc = new jsPDF();
+            doc.setFontSize(22);
+            doc.setFont('Times New Roman', 'bold');
+            doc.text("Patient Health Report", 20, 20);
+
+            doc.setFontSize(12);
+            doc.setFont('Times New Roman', 'normal');
+            let yPosition = 40;
+
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, yPosition);
+            yPosition += 10;
+
+            doc.text(`Thyroid Condition: ${thyroidCondition}`, 20, yPosition);
+            yPosition += 10;
+
+            doc.text(`Glucose Level: ${glucoseValue}`, 20, yPosition);
+            yPosition += 10;
+
+            doc.text(`Cholesterol Level: ${cholesterolValue}`, 20, yPosition);
+            yPosition += 10;
+
+            doc.text(`SpO2 Level: ${SpO2}`, 20, yPosition);
+            yPosition += 10;
+
+            doc.text(`Heart Rate: ${HeartRate}`, 20, yPosition);
+            yPosition += 10;
+
+            doc.setFont('Times New Roman', 'bold');
+            doc.text("Dietary Plans:", 20, yPosition);
+            yPosition += 10;
+            doc.setFont('Times New Roman', 'normal');
+
+            doc.text(`Glucose Diet Plan:`, 20, yPosition);
+            yPosition += 10;
+            const glucosePlanLines = doc.splitTextToSize(glucoseDietPlan, doc.internal.pageSize.getWidth() - 40);
+            glucosePlanLines.forEach(line => {
+                doc.text(line, 25, yPosition);
+                yPosition += 7;
+            });
+            yPosition += 5;
+
+            doc.text(`Cholesterol Diet Plan:`, 20, yPosition);
+            yPosition += 10;
+            const cholesterolPlanLines = doc.splitTextToSize(cholesterolDietPlan, doc.internal.pageSize.getWidth() - 40);
+            cholesterolPlanLines.forEach(line => {
+                doc.text(line, 25, yPosition);
+                yPosition += 7;
+            });
+
+            doc.save("Health_Report.pdf");
+        }
+    </script>
+    <!-- Popup Window -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>Impact Detected!</h2>
+            <button onclick="redirectToEmergency()">Learn More</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to Show Popup
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Function to Redirect to Another Page
+        function redirectToEmergency() {
+            window.location.href = 'Emergency.html';
+        }
+
+        // Simulate an Event That Triggers the Popup (For Example: Delay of 3 seconds)
+        onValue(ref(database, "/sensor/impact"), (snapshot) => {
+            const impactValue = snapshot.val();
+            console.log("Impact Value from Firebase:", impactValue); // Debugging log
+
+            if (impactValue) { // Condition for impact detected
+                console.log("Impact Detected - Showing Popup!"); // Debugging log
+                showPopup(); // Call the function to show the popup
+            } else {
+                console.log("No Impact Detected (or impact value is false/empty)."); // Debugging log
+                document.getElementById('popup').style.display = 'none'; // Optionally hide popup
+            }
+        });
+    </script>
+     <!-- Chatbot Section - ADDED HERE -->
+     <div class="chatbot-container">
+        <div class="chatbot-icon" id="chatbotIcon">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <iframe class="chatbot-iframe" id="chatbotIframe" width="350" height="430" allow="microphone;"
+            src="https://console.dialogflow.com/api-client/demo/embedded/9648c193-91b5-4147-b1a0-3d13a02fae57">
+        </iframe>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatbotIcon = document.getElementById('chatbotIcon');
+            const chatbotIframe = document.getElementById('chatbotIframe');
+
+            chatbotIcon.addEventListener('click', function () {
+                chatbotIframe.classList.toggle('show-chatbot');
+            });
+        });
+    </script>
+</body>
+
+</html>

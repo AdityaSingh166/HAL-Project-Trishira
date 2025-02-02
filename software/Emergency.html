@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Alert - Trishira Hospital</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .alert {
+            font-size: 8rem;
+            font-weight: bold;
+            color: red;
+            animation: blink 1s infinite alternate;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        .coordinates {
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+        .coordinates span {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .coordinates input {
+            font-size: 1.5rem;
+            padding: 10px;
+            margin: 5px;
+            border: 2px solid black;
+            border-radius: 5px;
+            text-align: center;
+            width: 200px;
+        }
+        /* Google Map Styling */
+        #map {
+            width: 80%;
+            height: 400px;
+            margin-top: 20px;
+            border: 2px solid black;
+            border-radius: 10px;
+        }
+
+        /* Chatbot Icon and Container Styles - ADDED HERE */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align items to the right */
+        }
+
+        .chatbot-icon {
+            background-color: var(--blue); /* Or any desired color, using var(--blue) to match website theme if defined in style.css */
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .chatbot-icon i {
+            font-size: 24px;
+        }
+
+        .chatbot-iframe {
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* Initially hidden */
+            z-index: 999; /* Just below the icon if needed */
+        }
+
+        .chatbot-iframe.show-chatbot {
+            display: block; /* Or flex if iframe content requires flexbox */
+        }
+    </style>
+
+    <!-- Google Maps API Script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4WWgBD7x6bm7iifq9FHtXuukZ5bZ3PpA&callback=initMap" async defer></script>
+
+    <script>
+        let map;
+        let marker;
+
+        function initMap() {
+            const defaultLocation = { lat: 0.0, lng: 0.0 }; // Default position
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultLocation,
+                zoom: 15
+            });
+            marker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                title: "Impact Location"
+            });
+
+            // Fetch GPS data from Firebase immediately after map is initialized
+            fetchGPSCoordinates();
+        }
+
+
+        function updateLocation(lat, lng) {
+            // Update UI fields
+            document.getElementById("latitude").textContent = lat.toFixed(6);
+            document.getElementById("longitude").textContent = lng.toFixed(6);
+            document.getElementById("latInput").value = lat.toFixed(6);
+            document.getElementById("lngInput").value = lng.toFixed(6);
+
+            // Update the map and marker
+            const newPosition = { lat: lat, lng: lng };
+            marker.setPosition(newPosition);
+            map.setCenter(newPosition);
+
+            // Debugging: Log updated map location
+            console.log("Updated Map Position:", newPosition);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="alert">Alert!! <br> Impact Detected!!</div>
+    <div class="coordinates">
+        Latitude: <span id="latitude">Loading...</span>     Longitude: <span id="longitude">Loading...</span>
+    </div>
+
+    <!-- Google Map -->
+    <div id="map"></div>
+
+    <!-- Chatbot Section - ADDED HERE -->
+    <div class="chatbot-container">
+        <div class="chatbot-icon" id="chatbotIcon">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <iframe
+            class="chatbot-iframe"
+            id="chatbotIframe"
+            width="350"
+            height="430"
+            allow="microphone;"
+            src="https://console.dialogflow.com/api-client/demo/embedded/9648c193-91b5-4147-b1a0-3d13a02fae57">
+        </iframe>
+    </div>
+
+    <!-- Firebase SDK (add before your script) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase configuration - Replace with your actual Firebase config from the Arduino code
+        const firebaseConfig = {
+            databaseURL: "https://thyroid-detection-6d511-default-rtdb.asia-southeast1.firebasedatabase.app/" // Use your Firebase HOST from Arduino code - REPLACE THIS!
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
+
+        // Get references to the latitude and longitude spans and inputs
+        const latitudeSpan = document.getElementById('latitude');
+        const longitudeSpan = document.getElementById('longitude');
+        const latitudeInput = document.getElementById('latInput'); // Corrected ID to latInput
+        const longitudeInput = document.getElementById('lngInput'); // Corrected ID to lngInput
+
+
+        // Function to fetch and display GPS coordinates from Firebase
+        function fetchGPSCoordinates() {
+            console.log("fetchGPSCoordinates() called"); // Debugging
+            const latitudeRef = firebase.database().ref('/alerts/impact_latitude');
+            const longitudeRef = firebase.database().ref('/alerts/impact_longitude');
+
+            latitudeRef.on('value', (snapshot) => {
+                console.log("latitudeRef.on('value') callback triggered"); // Debugging
+                let latitudeValue = snapshot.val();
+                console.log("Raw Latitude from Firebase:", latitudeValue); // Debugging: Raw value
+
+                if (latitudeValue) {
+                    latitudeValue = String(latitudeValue).trim(); // Ensure it's a string and trim whitespace
+                }
+
+                console.log("Latitude after trim:", latitudeValue); // Debugging: After trim
+
+                const parsedLatitude = parseFloat(latitudeValue);
+                console.log("Parsed Latitude (Number):", parsedLatitude); // Debugging: Parsed number
+
+                latitudeSpan.textContent = latitudeValue || 'No Data';
+                latitudeInput.value = latitudeValue || 'No Data';
+
+                if (!isNaN(parsedLatitude) && longitudeSpan.textContent && longitudeSpan.textContent !== 'Loading...' && longitudeSpan.textContent !== 'No Data') {
+                    updateLocation(parsedLatitude, parseFloat(longitudeSpan.textContent));
+                } else {
+                    console.log("Latitude is NaN or Longitude not ready, skipping updateLocation"); // Debugging
+                }
+            });
+
+            longitudeRef.on('value', (snapshot) => {
+                console.log("longitudeRef.on('value') callback triggered"); // Debugging
+                let longitudeValue = snapshot.val();
+                console.log("Raw Longitude from Firebase:", longitudeValue); // Debugging: Raw value
+
+                if (longitudeValue) {
+                    longitudeValue = String(longitudeValue).trim(); // Ensure it's a string and trim whitespace
+                }
+                console.log("Longitude after trim:", longitudeValue); // Debugging: After trim
+                const parsedLongitude = parseFloat(longitudeValue);
+                console.log("Parsed Longitude (Number):", parsedLongitude); // Debugging: Parsed number
+
+                longitudeSpan.textContent = longitudeValue || 'No Data';
+                longitudeInput.value = longitudeValue || 'No Data';
+
+                if (!isNaN(parsedLongitude)  && latitudeSpan.textContent && latitudeSpan.textContent !== 'Loading...' && latitudeSpan.textContent !== 'No Data') {
+                    updateLocation(parseFloat(latitudeSpan.textContent), parsedLongitude);
+                } else {
+                    console.log("Longitude is NaN or Latitude not ready, skipping updateLocation"); // Debugging
+                }
+            });
+        }
+
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotIcon = document.getElementById('chatbotIcon');
+            const chatbotIframe = document.getElementById('chatbotIframe');
+
+            chatbotIcon.addEventListener('click', function() {
+                chatbotIframe.classList.toggle('show-chatbot');
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Responsive Hospital Website Design Tutorial</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- ✅ Navigation Item Alert CSS -->
+    <style>
+        /* Navigation Item Alert Style */
+        #impactNavItem a {
+            color: var(--black); /* Default color - inherit from navbar styles */
+        }
+
+        #impactNavItem.impact-alert a {
+            color: red; /* Red color when impact detected */
+            font-weight: bold; /* Make it bold to stand out */
+        }
+
+        /* Chatbot Icon and Container Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align items to the right */
+        }
+
+        .chatbot-icon {
+            background-color: var(--blue); /* Or any desired color */
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .chatbot-icon i {
+            font-size: 24px;
+        }
+
+        .chatbot-iframe {
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* Initially hidden */
+            z-index: 999; /* Just below the icon if needed */
+        }
+
+        .chatbot-iframe.show-chatbot {
+            display: block; /* Or flex if iframe content requires flexbox */
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- header navbar section start  -->
+
+    <header>
+
+        <!-- logo name  -->
+        <a href="#" class="logo"><span>T</span>rishira</a>
+
+        <!-- navbar link  -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="#home">home</a></li>
+                <li><a href="#about">about</a></li>
+                <li><a href="#doctor">doctor</a></li>
+                <li><a href="Report.html">Report</a></li>
+                <li><a href="#review">review</a></li>
+                <li><a href="#contact">contact</a></li>
+                <li><a href="#blog">blog</a></li>
+                <!-- ✅ Impact Alert Navigation Item REMOVED -->
+            </ul>
+        </nav>
+
+        <div class="fas fa-bars"></div>
+    </header>
+    <!-- header navbar section end  -->
+
+    <!-- home section start  -->
+
+    <section id="home" class="home">
+
+        <div class="row">
+
+            <!-- home images  -->
+            <div class="images">
+                <img src="./images/home.png" alt="">
+            </div>
+
+            <!-- home heading  -->
+            <div class="content">
+                <h1><span>Stay</span> Safe, <span>Stay</span> Healthy.</h1>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa, officiis.</p>
+                <a href="#"><button class="button">read more</button></a>
+            </div>
+        </div>
+    </section>
+    <!-- home section end  -->
+
+    <!-- about section start  -->
+
+    <section id="about" class="about">
+
+        <h1 class="heading">about our facility</h1>
+        <h3 class="title">learn and explore our facility</h3>
+
+        <div class="box-container">
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- about images  -->
+                <div class="images">
+                    <img src="./images/about-1.png" alt="">
+                </div>
+
+                <!-- about heading & text  -->
+                <div class="content">
+                    <h3>ambulance services</h3>
+                    <p>Responds to emergency calls, Staffed with trained paramedics, and Delivers pre-hospital care while transporting patients to the
+                        hospita</p>
+                    <a href="#"><button class="button">learn more</button></a>
+                </div>
+            </div>
+            <!-- end here  -->
+
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- about images  -->
+                <div class="images">
+                    <img src="./images/about-2.png" alt="">
+                </div>
+
+                <!-- about heading & text  -->
+                <div class="content">
+                    <h3>emergency rooms</h3>
+                    <p> a dedicated area within a hospital where patients with urgent medical needs receive immediate assessment and treatment, staffed 24/7
+                        by specialized medical professionals equipped to handle critical situations like trauma, heart attacks, or severe illnesses. </p>
+                    <a href="Emergency.html"><button class="button">learn more</button></a>
+                </div>
+            </div>
+            <!-- end here  -->
+
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- about images  -->
+                <div class="images">
+                    <img src="./images/about-3.png" alt="">
+                </div>
+
+                <!-- about heading & text  -->
+                <div class="content">
+                    <h3>free check-ups</h3>
+                    <p>provides basic medical screenings and consultations at no cost to patients, allowing individuals to access essential healthcare
+                        services without financial burden</p>
+                    <a href="#"><button class="button">learn more</button></a>
+                </div>
+            </div>
+            <!-- end here  -->
+        </div>
+    </section>
+
+    <!-- about section end  -->
+
+    <!-- card section start  -->
+
+    <section id="doctor" class="card">
+
+        <div class="container">
+
+            <h1 class="heading">doctors</h1>
+            <h3 class="title">our professional doctors</h3>
+
+            <div class="box-container">
+
+                <!-- start here  -->
+                <div class="box">
+                    <img src="./images/doctor-1.jpg" alt="">
+
+                    <div class="content">
+                        <a href="#">
+                            <h2>Dr.Kamath</h2>
+                        </a>
+                        <p>Neuro Surgeon</p>
+
+                        <!-- card icons  -->
+                        <div class="icons">
+                            <a href="#" class="fab fa-facebook-f"></a>
+                            <a href="#" class="fab fa-twitter"></a>
+                            <a href="#" class="fab fa-instagram"></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- end here  -->
+
+                <!-- start here  -->
+                <div class="box">
+                    <img src="./images/doctor-2.jpg" alt="">
+
+                    <div class="content">
+                        <a href="#">
+                            <h2>Dr.Mary</h2>
+                        </a>
+                        <p>Gynacologist</p>
+
+                        <!-- card icons  -->
+                        <div class="icons">
+                            <a href="#" class="fab fa-facebook-f"></a>
+                            <a href="#" class="fab fa-twitter"></a>
+                            <a href="#" class="fab fa-instagram"></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- end here  -->
+
+                <!-- start here  -->
+                <div class="box">
+                    <img src="./images/doctor-3.jpg" alt="">
+
+                    <div class="content">
+                        <a href="#">
+                            <h2>Dr.Ashok</h2>
+                        </a>
+                        <p>General Surgeon</p>
+
+                        <!-- card icons  -->
+                        <div class="icons">
+                            <a href="#" class="fab fa-facebook-f"></a>
+                            <a href="#" class="fab fa-twitter"></a>
+                            <a href="#" class="fab fa-instagram"></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- end here  -->
+
+            </div>
+        </div>
+    </section>
+    <!-- card section end  -->
+
+    <!-- review section start  -->
+
+    <section id="review" class="review">
+
+        <h1 class="heading">our patient review</h1>
+        <h3 class="title">what patient says about us</h3>
+
+        <div class="box-container">
+
+            <!-- start here  -->
+            <div class="box">
+                <i class="fas fa-quote-left"></i>
+                <p>The hospital is well managed with quality staff. All the tests and checkups were well coordinated. I am very happy with the hospitality, caring
+                    staff. Doctors are also amazing.</p>
+
+                <div class="images">
+                    <img src="./images/img-1.jpg" alt="">
+
+                    <div class="info">
+                        <h3>Amritha</h3>
+                        <span>date : 11 2024</span>
+                    </div>
+                </div>
+            </div>
+            <!-- end here  -->
+
+
+            <!-- start here  -->
+            <div class="box">
+                <i class="fas fa-quote-left"></i>
+                <p>The facilities were clean and well-maintained, and I felt genuinely cared for throughout my stay. I would highly recommend this hospital to anyone
+                    in need of medical treatment</p>
+
+                <div class="images">
+                    <img src="./images/img-2.jpg" alt="">
+
+                    <div class="info">
+                        <h3>Shreyas</h3>
+                        <span>date : 12 2024</span>
+                    </div>
+                </div>
+            </div>
+            <!-- end here  -->
+
+
+            <!-- start here  -->
+            <div class="box">
+                <i class="fas fa-quote-left"></i>
+                <p>The doctors were highly knowledgeable and explained everything clearly, the nurses were attentive and compassionate, and the staff at the front
+                    desk were very helpful in navigating the process.</p>
+
+                <div class="images">
+                    <img src="./images/img-3.jpg" alt="">
+
+                    <div class="info">
+                        <h3>Stan</h3>
+                        <span>date : 1 2025</span>
+                    </div>
+                </div>
+            </div>
+            <!-- end here  -->
+        </div>
+    </section>
+    <!-- review section end  -->
+
+    <!-- contact section start  -->
+
+    <section id="contact" class="contact">
+
+        <h1 class="heading">contact us</h1>
+        <h3 class="title">you can talk to us any times,</h3>
+
+        <div class="row">
+
+            <!-- form images  -->
+            <div class="images">
+                <img src="./images/form.png" alt="">
+            </div>
+
+            <div class="form-container">
+
+                <input type="text" placeholder="full name" name="" id="">
+                <input type="email" placeholder="enter your email" name="" id="">
+
+                <input type="number" placeholder="phone" name="" id="">
+                <textarea name="" cols="30" rows="10" id=""></textarea>
+                <input type="submit" value="send">
+            </div>
+        </div>
+
+
+
+
+    </section>
+
+
+
+    <!-- contact section end  -->
+
+
+    <!-- blog section start  -->
+
+    <section id="blog" class="blog">
+
+        <h1 class="heading">blog</h1>
+        <h3 class="title">High Octane Knowledge</h3>
+
+        <div class="box-container">
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- images  -->
+                <div class="images">
+                    <img src="./images/blog 1.png" alt="">
+
+                    <div class="content">
+                        <a href="#">
+                            <h2>diabetes</h2>
+                        </a>
+                        <p>Diabetes is a chronic disease that occurs when the body can't regulate blood sugar levels. This is because the pancreas doesn't produce
+                            enough insulin, or the body doesn't use insulin properly. </p>
+                        <!-- button  -->
+                        <a href="#"> <button class="button">learn more</button></a>
+                    </div>
+                </div>
+            </div>
+            <!-- end here  -->
+
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- images  -->
+                <div class="images">
+                    <img src="./images/blog 2.png" alt="">
+
+                    <div class="content">
+                        <a href="#">
+                            <h2>covid-19 vaccine</h2>
+                        </a>
+                        <p>The COVID-19 vaccine helps protect you from severe illness, hospitalization, and death.</p>
+                        <!-- button  -->
+                        <a href="#"> <button class="button">learn more</button></a>
+                    </div>
+                </div>
+            </div>
+            <!-- end here  -->
+
+
+            <!-- start here  -->
+            <div class="box">
+                <!-- images  -->
+                <div class="images">
+                    <img src="./images/blog 3.png" alt="">
+
+                    <div class="content">
+                        <a href="#">
+                            <h2>prevent epidemic</h2>
+                        </a>
+                        <p>Prevention is better than cure.</p>
+                        <!-- button  -->
+                        <a href="#"> <button class="button">learn more</button></a>
+                    </div>
+                </div>
+            </div>
+            <!-- end here  -->
+        </div>
+    </section>
+
+
+
+    <!-- blog section end  -->
+
+    <!-- footer section start  -->
+
+    <section class="footer">
+
+        <div class="box">
+            <h2 class="logo"><span>T</span>rishira <span></h2>
+        </div>
+
+        <div class="box">
+            <h2 class="logo"><span>S</span>hare</h2>
+
+            <a href="#">facebook</a>
+            <a href="#">twitter</a>
+            <a href="#">instagram</a>
+            <a href="#">pinterest</a>
+        </div>
+
+        <div class="box">
+            <h2 class="logo"><span>L</span>inks</h2>
+
+            <a href="#">home</a>
+            <a href="#">about</a>
+            <a href="#">Doctor</a>
+            <a href="#">Review</a>
+            <a href="#">contact</a>
+            <a href="#">blog</a>
+        </div>
+
+
+        <h1 class="credit">created by <span>Trishira</span> all right reserved.</h1>
+    </section>
+
+    <!-- footer section end  -->
+
+    <!-- Chatbot Section -->
+    <div class="chatbot-container">
+        <div class="chatbot-icon" id="chatbotIcon">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <iframe
+            class="chatbot-iframe"
+            id="chatbotIframe"
+            width="350"
+            height="430"
+            allow="microphone;"
+            src="https://console.dialogflow.com/api-client/demo/embedded/9648c193-91b5-4147-b1a0-3d13a02fae57">
+        </iframe>
+    </div>
+
+
+    <!-- jquery cdn link  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="./js/main.js"></script>
+
+    <!-- ✅ Firebase Impact Listener -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiakq7zJ31-m1Q2MkeSgfnmQLNXRFM_OM",
+            authDomain: "thyroid-detection-6d511.firebaseapp.com",
+            databaseURL: "https://thyroid-detection-6d511-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "thyroid-detection-6d511",
+            storageBucket: "thyroid-detection-6d511.firebasestorage.app",
+            messagingSenderId: "334326755504",
+            appId: "1:334326755504:web:59091301428c394df10b75",
+            measurementId: "G-W8Z9Z0WCK5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const impactNavItem = document.getElementById('impactNavItem'); // ✅ Get nav item
+
+        // ✅ Enhanced logging for impact listener - UPDATED CONDITION
+        onValue(ref(database, "/sensor/impact"), (snapshot) => {
+            console.log("✅ Impact Listener Triggered!");
+            const impactValue = snapshot.val();
+            console.log("✅ Impact Value from Firebase:", impactValue);
+
+            if (impactValue === "Impact Detected") {
+                console.log("🔥🔥🔥 IF CONDITION IS TRUE! Impact Detected!"); // ✅ NEW LOG - INSIDE IF BLOCK
+                console.log("✅ Impact Condition Met (impactValue is 'Impact Detected'):", impactValue);
+                impactNavItem.classList.add('impact-alert'); // ✅ Add alert class
+                console.log("✅ Added 'impact-alert' class to navigation item.");
+            } else {
+                console.log("✅ Impact Condition NOT Met (impactValue is NOT 'Impact Detected'):", impactValue);
+                impactNavItem.classList.remove('impact-alert'); // ✅ Remove alert class
+                console.log("✅ Removed 'impact-alert' class from navigation item.");
+            }
+        }, (error) => {
+            console.error("❌ Error in Impact Listener:", error);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotIcon = document.getElementById('chatbotIcon');
+            const chatbotIframe = document.getElementById('chatbotIframe');
+
+            chatbotIcon.addEventListener('click', function() {
+                chatbotIframe.classList.toggle('show-chatbot');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

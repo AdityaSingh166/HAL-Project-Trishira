@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Responsive Hospital Website Design Tutorial</title>
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="./css/style.css">
+    <script type="module">
+        // ✅ Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+
+        // ✅ Your Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDiakq7zJ31-m1Q2MkeSgfnmQLNXRFM_OM",
+            authDomain: "thyroid-detection-6d511.firebaseapp.com",
+            databaseURL: "https://thyroid-detection-6d511-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "thyroid-detection-6d511",
+            storageBucket: "thyroid-detection-6d511.firebasestorage.app",
+            messagingSenderId: "334326755504",
+            appId: "1:334326755504:web:59091301428c394df10b75",
+            measurementId: "G-W8Z9Z0WCK5"
+        };
+
+        // ✅ Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // ✅ Function to Update UI
+        function updateUI(snapshot, elementId) {
+            const element = document.getElementById(elementId);
+            if (snapshot.exists() && element) {
+                element.innerText = snapshot.val();
+            } else {
+                element.innerText = "No Data";
+            }
+        }
+
+        // ✅ Listen for Real-Time Updates from Firebase
+        onValue(ref(database, "/sensor/ambient_temperature"), (snapshot) => updateUI(snapshot, "ambientTemp"));
+        onValue(ref(database, "/sensor/temperature"), (snapshot) => updateUI(snapshot, "objectTemp"));
+        onValue(ref(database, "/sensor/heart_rate"), (snapshot) => updateUI(snapshot, "HeartRate"));
+        onValue(ref(database, "/sensor/spo2"), (snapshot) => updateUI(snapshot, "SpO2"));
+        onValue(ref(database, "/alerts/emergency"), (snapshot) => updateUI(snapshot, "emergencyAlert"));
+    </script>
+
+    <style>
+        /* Popup Window Styles */
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 0, 0.9); /* Red background */
+            color: white;
+            padding: 80px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup-content h2 {
+            margin-bottom: 15px;
+        }
+
+        .popup-content button {
+            background-color: white;
+            color: red;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .popup-content button:hover {
+            background-color: lightgray;
+        }
+
+        /* Chatbot Icon and Container Styles - ADDED HERE */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .chatbot-icon {
+            background-color: var(--blue);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .chatbot-icon i {
+            font-size: 24px;
+        }
+
+        .chatbot-iframe {
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+        }
+
+        .chatbot-iframe.show-chatbot {
+            display: block;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- header navbar section start  -->
+
+    <header>
+
+        <!-- logo name  -->
+        <a href="index.html" class="logo"><span>T</span>rishira</a>
+        <!-- navbar link  -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">home</a></li>
+                <li><a href="#about">about</a></li>
+                <li><a href="#doctor">doctor</a></li>
+                <li><a href="Report.html">Report</a></li>
+                <li><a href="#review">review</a></li>
+                <li><a href="#contact">contact</a></li>
+                <li><a href="#blog">blog</a></li>
+            </ul>
+        </nav>
+
+        <div class="fas fa-bars"></div>
+    </header>
+
+    <!-- home section start  -->
+
+    <section id="home" class="home">
+
+        <div class="row">
+
+            <!-- home images  -->
+            <div class="images">
+                <img src="./images/form.png" alt="">
+            </div>
+
+            <!-- home heading  -->
+            <div class="content">
+                <h1>Live IoT Sensor Data</h1>
+                <p><b>Ambient Temperature:</b> <span id="ambientTemp">Loading...</span> °C</p>
+                <p><b>Object Temperature:</b> <span id="objectTemp">Loading...</span> °C</p>
+                <!-- <p><b>Impact:</b> <span id="impact">Loading...</span></p> -->
+                <p><b>Heart Rate:</b> <span id="HeartRate">Loading...</span> BPM</p>
+                <p><b>SpO2:</b> <span id="SpO2">Loading...</span> %</p>
+                <br> <br>
+                <a href="Rpage.html" class="button">Generate Report</a>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <!-- home section end  -->
+
+    <!-- Popup Window -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>Impact Detected!</h2>
+            <button onclick="redirectToEmergency()">Learn More</button>
+        </div>
+    </div>
+
+    <!-- Chatbot Section - ADDED HERE -->
+    <div class="chatbot-container">
+        <div class="chatbot-icon" id="chatbotIcon">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+        <iframe class="chatbot-iframe" id="chatbotIframe" width="350" height="430" allow="microphone;"
+            src="https://console.dialogflow.com/api-client/demo/embedded/9648c193-91b5-4147-b1a0-3d13a02fae57">
+        </iframe>
+    </div>
+
+
+    <script>
+        // Function to Show Popup
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Function to Redirect to Another Page
+        function redirectToEmergency() {
+            window.location.href = 'Emergency.html';
+        }
+
+        // Simulate an Event That Triggers the Popup (For Example: Delay of 3 seconds)
+        onValue(ref(database, "/sensor/impact"), (snapshot) => {
+            const impactValue = snapshot.val();
+            console.log("Impact Value from Firebase:", impactValue); // Debugging log
+
+            if (impactValue === "Impact Detected") { // Condition for impact detected - Modified to string "Impact Detected"
+                console.log("Impact Detected - Showing Popup!"); // Debugging log
+                showPopup(); // Call the function to show the popup
+            } else {
+                console.log("No Impact Detected (or impact value is not 'Impact Detected')."); // Debugging log
+                document.getElementById('popup').style.display = 'none'; // Optionally hide popup
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatbotIcon = document.getElementById('chatbotIcon');
+            const chatbotIframe = document.getElementById('chatbotIframe');
+
+            chatbotIcon.addEventListener('click', function () {
+                chatbotIframe.classList.toggle('show-chatbot');
+            });
+        });
+    </script>
+</body>
+
+</html>
